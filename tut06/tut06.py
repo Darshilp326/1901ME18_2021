@@ -23,8 +23,8 @@ def regex_renamer():
 			regex="(.*) s([0-9]{2})e([0-9]{2}) (.*)"
 			match=re.match(regex,file)
 			arr=re.split(r'\.',match.group(4))
-			season=match.group(2).zfill(season_padding)
-			episode=match.group(3).zfill(episode_padding)
+			season=str(int(match.group(2))).zfill(season_padding)
+			episode=str(int(match.group(3))).zfill(episode_padding)
 			ext=arr[-1]
 			fileName=match.group(1)
 			new_fileName=fileName+' Season '+season+' Episode '+ episode+'.'+ext
@@ -38,8 +38,8 @@ def regex_renamer():
 			regex="(.*)([0-9]{1})x([0-9]{2})(.*)"
 			match=re.match(regex,file)
 			arr=re.split(r'\.',match.group(4))
-			season=match.group(2).zfill(season_padding)
-			episode=match.group(3).zfill(episode_padding)
+			season=str(int(match.group(2))).zfill(season_padding)
+			episode=str(int(match.group(3))).zfill(episode_padding)
 			episode_name=arr[0]			
 			ext=arr[-1]
 			fileName=match.group(1)
@@ -54,8 +54,8 @@ def regex_renamer():
 			regex="(.*)([0-9]{1})x([0-9]{2})(.*)"
 			match=re.match(regex,file)
 			arr=re.split(r'\.',match.group(4))
-			season=match.group(2).zfill(season_padding)
-			episode=match.group(3).zfill(episode_padding)
+			season=str(int(match.group(2))).zfill(season_padding)
+			episode=str(int(match.group(3))).zfill(episode_padding)
 			episode_name=arr[0]			
 			ext=arr[-1]
 			fileName=match.group(1)
