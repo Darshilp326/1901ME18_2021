@@ -12,6 +12,7 @@ feedbackRemaining = []
 
 feedbackFile = pd.read_csv("course_feedback_submitted_by_students.csv")
 studInfo = pd.read_csv("studentinfo.csv")
+courseRegisteredFile = pd.read_csv("course_registered_by_all_students.csv")       
 
 if os.path.exists('course_feedback_remaining.xlsx'):
     os.remove('course_feedback_remaining.xlsx')
@@ -26,7 +27,6 @@ def readCourse():
             continue
         else:
             rollToSem[row[0]] = row[1]
-            subToSem[row[3]] = row[2]
             studRollToSub.setdefault(row[0], []).append(row[3])
 
 # Read course master file and store each subject's ltp
@@ -45,15 +45,17 @@ def checkIfExistInFeedback(roll, subno, feedback_type):
     if not ((feedbackFile["stud_roll"] == roll) & (feedbackFile['course_code'] == subno) & (feedbackFile['feedback_type']==feedback_type)).any():
         # Finding student info from studinfo.csv
         row = studInfo.loc[studInfo['Roll No'] == roll]
+        x = courseRegisteredFile[(courseRegisteredFile["rollno"] == roll) & (courseRegisteredFile["subno"] == subno)]                                                                                                                                                                        
+        schedule_sem = x["schedule_sem"].values[0]
         if row.values.tolist():
             studInfoList = row.values.tolist()[0]
-            studentDetailList = [studInfoList[1], rollToSem[roll], subToSem[subno],
+            studentDetailList = [studInfoList[1], rollToSem[roll], schedule_sem,
                         subno, studInfoList[0], studInfoList[8], studInfoList[9], studInfoList[10]]
             feedbackRemaining.append(studentDetailList)
         else:
-            # As studinfo file had no information,adding 'NA' to some fields
-            studentDetailList = [roll, rollToSem[roll], subToSem[subno],
-                        subno, "NA", "NA", "NA", "NA"]
+            # As studinfo file had no information,adding 'Notfound' to some fields
+            studentDetailList = [roll, rollToSem[roll], schedule_sem,
+                        subno, "Notfound", "Notfound", "Notfound", "Notfound"]
             feedbackRemaining.append(studentDetailList)
 
 
@@ -82,6 +84,7 @@ def feedback_not_submitted():
     for list in feedbackRemaining:
         sheet.append(list)
     wb.save(output_file_name)
+
 
 
 feedback_not_submitted()
