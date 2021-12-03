@@ -31,8 +31,18 @@ def generateMarksheets(p_mark,n_mark):
             roll_email_mapping[row[6]] = [row[1],row[4]]
         # print(response_master_list)
     
+    answer_key_count = 0
     concise_sheet_header = response_master_list[0][:6].copy()
-    master_answer_key = response_master_list[1]
+    for row in response_master_list:
+        if row[6].upper() == "ANSWER":
+            master_answer_key = row
+            answer_key_count = answer_key_count+1
+    
+    if answer_key_count == 0:
+        return{
+            'status':404
+        }
+    
     concise_sheet = [response_master_list[0]]
     # concise_sheet_header = response_master_list[0].copy()
     response_master_list = response_master_list[1:]
@@ -219,7 +229,9 @@ def generateMarksheets(p_mark,n_mark):
     #         print(row)
 
 
-    return    
+    return{
+        'status':200
+    }
 
 
 
@@ -239,8 +251,26 @@ def generateconciseMarksheets(p_mark,n_mark):
             response_master_list.append(row)
         # print(response_master_list)
     
+    answer_key_count = 0
     concise_sheet_header = response_master_list[0][:6].copy()
-    master_answer_key = response_master_list[1]
+    for row in response_master_list:
+        if row[6].upper() == "ANSWER":
+            master_answer_key = row
+            answer_key_count = answer_key_count+1
+    
+    if answer_key_count == 0:
+        return{
+            'status':404
+        }
+    
+    # if answer_key_count > 0:
+    #     return{
+    #             "more than 1 answer key"
+    #     }
+
+    
+    concise_sheet_header = response_master_list[0][:6].copy()
+    
     concise_sheet = [response_master_list[0]]
     # concise_sheet_header = response_master_list[0].copy()
     response_master_list = response_master_list[1:]
@@ -315,6 +345,7 @@ def generateconciseMarksheets(p_mark,n_mark):
     df = pd.DataFrame(concise_sheet, columns = concise_sheet_header)
     df.to_csv("marksheets/concise.csv")
 
-    return
-
+    return {
+        'status':200
+    }
 

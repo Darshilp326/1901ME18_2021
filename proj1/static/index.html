@@ -48,8 +48,15 @@
          // Send our FormData object; HTTP headers are set automatically
          XHR.send(FD);
          XHR.onload = function(){
-             console.log(XHR.response)
-             alert("Marksheets are created!")
+             let data=XHR.response
+             data=JSON.parse(data)
+             if (data.message === 'NA'){
+              alert("No roll number with ANSWER is present, Cannot process!")
+             }
+             else{
+              alert("Marksheets are created!")
+             }
+             
          }
        }
        function generateConcise(){
@@ -64,8 +71,14 @@
         // Send our FormData object; HTTP headers are set automatically
         XHR.send(FD);
         XHR.onload = function(){
-            console.log(XHR.response)
-            alert("Concise Marksheet is created!")
+          let data=XHR.response
+          data=JSON.parse(data)
+          if (data.message === 'NA'){
+           alert("No roll number with ANSWER is present, Cannot process!")
+          }
+          else{
+           alert("Concise Marksheet is created!")
+          }
         }
       }
        function sendMails(){

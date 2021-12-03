@@ -3,7 +3,7 @@ from flask_cors import CORS
 import logging
 import os
 import urllib.request
-from proj1 import *
+from proj1 import getMailData,generateconciseMarksheets,generateMarksheets
 
 ALLOWED_EXTENSIONS = set(['csv'])
 
@@ -36,7 +36,13 @@ def send_email():
 def generate_concise():
     pmarks=int(request.form.get('pmarks'))
     nmarks=int(request.form.get('nmarks'))
-    generateconciseMarksheets(pmarks,nmarks)
+    response=generateconciseMarksheets(pmarks,nmarks)
+    print(response)
+    if response['status']== 404:
+        print('false')
+        resp = jsonify({'message' : 'NA'})
+        resp.status_code = 400
+        return resp
     resp = jsonify({'message' : 'Concise file is generated'})
     resp.status_code = 200
     return resp	
@@ -59,7 +65,13 @@ def upload_file():
 	pmarks=int(request.form.get('pmarks'))
 	nmarks=int(request.form.get('nmarks'))
 	print(pmarks,nmarks)
-	generateMarksheets(pmarks,nmarks)
+	response=generateMarksheets(pmarks,nmarks)
+	print(response)
+	if response['status']== 404:
+		print('false')
+		resp = jsonify({'message' : 'NA'})
+		resp.status_code = 400
+		return resp	
 	resp = jsonify({'message' : 'Files generated succesfully'})
 	resp.status_code = 200
 	return resp
